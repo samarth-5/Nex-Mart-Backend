@@ -1,12 +1,10 @@
 package com.samarth_dev.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.samarth_dev.domain.USER_ROLE;
 import com.sun.source.doctree.UsesTree;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
@@ -35,7 +33,10 @@ public class User {
 
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
+    @OneToMany
     private Set<Address> addresses = new HashSet<>();
 
+    @ManyToMany
+    @JsonIgnore
     private Set<Coupon> usedCoupons = new HashSet<>();
 }
