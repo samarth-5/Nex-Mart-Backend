@@ -1,4 +1,8 @@
 package com.samarth_dev.service;
 
-public class AuthService {
+import com.samarth_dev.response.SignupRequest;
+
+public interface AuthService {
+
+    String createUser(SignupRequest req);
 }
