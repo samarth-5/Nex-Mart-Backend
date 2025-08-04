@@ -1,8 +1,11 @@
 package com.samarth_dev.controller;
 
+import com.samarth_dev.domain.USER_ROLE;
 import com.samarth_dev.modal.User;
 import com.samarth_dev.repository.UserRepository;
+import com.samarth_dev.response.AuthResponse;
 import com.samarth_dev.response.SignupRequest;
+import com.samarth_dev.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,16 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> createUserHandler(@RequestBody SignupRequest req){
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req){
 
-        User user = new User();
-        user.setEmail(req.getEmail());
-        user.setFullName(req.getFullName());
+        String jwt = authService.createUser(req);
 
-        User saveduser = userRepository.save(user);
+        AuthResponse res = new AuthResponse();
+        res.setJwt(jwt);
+        res.setMessage("Registration Success!!");
+        res.setRole(USER_ROLE.ROLE_CUSTOMER);
         
-        return ResponseEntity.ok(saveduser);
+        return ResponseEntity.ok(res);
     }
 }
