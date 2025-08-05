@@ -2,7 +2,9 @@ package com.samarth_dev.controller;
 
 import com.samarth_dev.domain.USER_ROLE;
 import com.samarth_dev.modal.User;
+import com.samarth_dev.modal.VerificationCode;
 import com.samarth_dev.repository.UserRepository;
+import com.samarth_dev.response.ApiResponse;
 import com.samarth_dev.response.AuthResponse;
 import com.samarth_dev.response.SignupRequest;
 import com.samarth_dev.service.AuthService;
@@ -22,7 +24,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req){
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req)throws Exception{
 
         String jwt = authService.createUser(req);
 
@@ -31,6 +33,17 @@ public class AuthController {
         res.setMessage("Registration Success!!");
         res.setRole(USER_ROLE.ROLE_CUSTOMER);
         
+        return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/sent/login-signup-otp")
+    public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody VerificationCode req)throws Exception{
+
+        authService.sentLoginOtp(req.getEmail());
+
+        ApiResponse res = new ApiResponse();
+        res.setMessage("OTP sent successfully!!");
+
         return ResponseEntity.ok(res);
     }
 }
