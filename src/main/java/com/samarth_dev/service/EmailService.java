@@ -26,7 +26,8 @@ public class EmailService {
             javaEmailSender.send(mimeMessage);
         }
         catch (MailException e){
-            throw new MailSendException("Failed to send email!!");
+            e.printStackTrace();
+            throw new MailSendException("Failed to send email!!"+e.getMessage(),e);
         }
     }
 }

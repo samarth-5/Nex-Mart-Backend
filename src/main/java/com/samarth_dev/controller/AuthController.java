@@ -4,6 +4,7 @@ import com.samarth_dev.domain.USER_ROLE;
 import com.samarth_dev.modal.User;
 import com.samarth_dev.modal.VerificationCode;
 import com.samarth_dev.repository.UserRepository;
+import com.samarth_dev.request.LoginRequest;
 import com.samarth_dev.response.ApiResponse;
 import com.samarth_dev.response.AuthResponse;
 import com.samarth_dev.response.SignupRequest;
@@ -45,5 +46,13 @@ public class AuthController {
         res.setMessage("OTP sent successfully!!");
 
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest req)throws Exception{
+
+        AuthResponse authResponse = authService.signin(req);
+
+        return ResponseEntity.ok(authResponse);
     }
 }

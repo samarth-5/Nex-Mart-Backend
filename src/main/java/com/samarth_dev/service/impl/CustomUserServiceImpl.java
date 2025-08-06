@@ -43,11 +43,18 @@ public class CustomUserServiceImpl implements UserDetailsService {
     }
 
     private UserDetails buildUserDetails(String email, String password, USER_ROLE role) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("Email cannot be null or blank!!");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be null or blank!!");
+        }
+
         if(role==null)
             role = USER_ROLE.ROLE_CUSTOMER;
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("ROLE"+role));
+        authorityList.add(new SimpleGrantedAuthority(role.toString()));
 
         return new org.springframework.security.core.userdetails.User(email,password,authorityList);
     }
