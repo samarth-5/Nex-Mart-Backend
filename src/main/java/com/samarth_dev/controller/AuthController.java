@@ -3,6 +3,7 @@ package com.samarth_dev.controller;
 import com.samarth_dev.domain.USER_ROLE;
 import com.samarth_dev.modal.VerificationCode;
 import com.samarth_dev.repository.UserRepository;
+import com.samarth_dev.request.LoginOtpRequest;
 import com.samarth_dev.request.LoginRequest;
 import com.samarth_dev.response.ApiResponse;
 import com.samarth_dev.response.AuthResponse;
@@ -24,9 +25,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/sent/login-signup-otp")
-    public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody VerificationCode req)throws Exception{
+    public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody LoginOtpRequest req)throws Exception{
 
-        authService.sentLoginOtp(req.getEmail());
+        authService.sentLoginOtp(req.getEmail(),req.getRole());
 
         ApiResponse res = new ApiResponse();
         res.setMessage("OTP sent successfully!!");

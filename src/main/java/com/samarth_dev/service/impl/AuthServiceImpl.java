@@ -3,9 +3,11 @@ package com.samarth_dev.service.impl;
 import com.samarth_dev.config.JwtProvider;
 import com.samarth_dev.domain.USER_ROLE;
 import com.samarth_dev.modal.Cart;
+import com.samarth_dev.modal.Seller;
 import com.samarth_dev.modal.User;
 import com.samarth_dev.modal.VerificationCode;
 import com.samarth_dev.repository.CartRepository;
+import com.samarth_dev.repository.SellerRepository;
 import com.samarth_dev.repository.UserRepository;
 import com.samarth_dev.repository.VerificationCodeRepository;
 import com.samarth_dev.request.LoginRequest;
@@ -40,17 +42,26 @@ public class AuthServiceImpl implements AuthService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final CustomUserServiceImpl customUserService;
+    private final SellerRepository sellerRepository;
 
     @Override
-    public void sentLoginOtp(String email) throws Exception {
+    public void sentLoginOtp(String email, USER_ROLE role) throws Exception {
         String SIGNING_PREFIX = "signin_";
 
         if (email.startsWith(SIGNING_PREFIX)) {
             email = email.substring(SIGNING_PREFIX.length());
 
-            User user = userRepository.findByEmail(email);
-            if (user == null) {
-                throw new Exception("user not exist with provided email");
+            if(role.equals(USER_ROLE.ROLE_SELLER)) {
+                Seller seller =sellerRepository.findByEmail(email);
+                if(seller == null){
+                    throw new Exception("Seller not found!!");
+                }
+            }
+            else{
+                User user = userRepository.findByEmail(email);
+                if (user == null) {
+                    throw new Exception("user not exist with provided email");
+                }
             }
         }
 
