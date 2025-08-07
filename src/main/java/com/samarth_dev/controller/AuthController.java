@@ -1,13 +1,12 @@
 package com.samarth_dev.controller;
 
 import com.samarth_dev.domain.USER_ROLE;
-import com.samarth_dev.modal.User;
 import com.samarth_dev.modal.VerificationCode;
 import com.samarth_dev.repository.UserRepository;
 import com.samarth_dev.request.LoginRequest;
 import com.samarth_dev.response.ApiResponse;
 import com.samarth_dev.response.AuthResponse;
-import com.samarth_dev.response.SignupRequest;
+import com.samarth_dev.request.SignupRequest;
 import com.samarth_dev.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

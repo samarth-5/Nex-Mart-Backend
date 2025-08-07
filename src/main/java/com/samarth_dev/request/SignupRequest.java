@@ -1,4 +1,4 @@
-package com.samarth_dev.response;
+package com.samarth_dev.request;
 
 import lombok.Data;
 

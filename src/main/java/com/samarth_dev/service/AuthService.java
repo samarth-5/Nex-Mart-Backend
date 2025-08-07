@@ -2,7 +2,7 @@ package com.samarth_dev.service;
 
 import com.samarth_dev.request.LoginRequest;
 import com.samarth_dev.response.AuthResponse;
-import com.samarth_dev.response.SignupRequest;
+import com.samarth_dev.request.SignupRequest;
 
 public interface AuthService {
 

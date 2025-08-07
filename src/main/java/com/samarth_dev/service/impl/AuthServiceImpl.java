@@ -10,7 +10,7 @@ import com.samarth_dev.repository.UserRepository;
 import com.samarth_dev.repository.VerificationCodeRepository;
 import com.samarth_dev.request.LoginRequest;
 import com.samarth_dev.response.AuthResponse;
-import com.samarth_dev.response.SignupRequest;
+import com.samarth_dev.request.SignupRequest;
 import com.samarth_dev.service.AuthService;
 import com.samarth_dev.service.EmailService;
 import com.samarth_dev.utils.OtpUtil;
