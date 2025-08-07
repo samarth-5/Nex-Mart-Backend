@@ -23,19 +23,6 @@ public class AuthController {
     private final UserRepository userRepository;
     private final AuthService authService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req)throws Exception{
-
-        String jwt = authService.createUser(req);
-
-        AuthResponse res = new AuthResponse();
-        res.setJwt(jwt);
-        res.setMessage("Registration Success!!");
-        res.setRole(USER_ROLE.ROLE_CUSTOMER);
-        
-        return ResponseEntity.ok(res);
-    }
-
     @PostMapping("/sent/login-signup-otp")
     public ResponseEntity<ApiResponse> sentOtpHandler(@RequestBody VerificationCode req)throws Exception{
 
@@ -47,11 +34,23 @@ public class AuthController {
         return ResponseEntity.ok(res);
     }
 
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req)throws Exception{
+
+        String jwt = authService.createUser(req);
+
+        AuthResponse res = new AuthResponse();
+        res.setJwt(jwt);
+        res.setMessage("Registration Success!!");
+        res.setRole(USER_ROLE.ROLE_CUSTOMER);
+
+        return ResponseEntity.ok(res);
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest req)throws Exception{
 
         AuthResponse authResponse = authService.signin(req);
-
         return ResponseEntity.ok(authResponse);
     }
 }
