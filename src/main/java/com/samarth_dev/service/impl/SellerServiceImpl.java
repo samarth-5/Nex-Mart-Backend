@@ -3,6 +3,7 @@ package com.samarth_dev.service.impl;
 import com.samarth_dev.config.JwtProvider;
 import com.samarth_dev.domain.AccountStatus;
 import com.samarth_dev.domain.USER_ROLE;
+import com.samarth_dev.exception.SellerException;
 import com.samarth_dev.modal.Address;
 import com.samarth_dev.modal.Seller;
 import com.samarth_dev.repository.AddressRepository;
@@ -54,8 +55,8 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller getSellerById(Long id) throws Exception {
-        return sellerRepository.findById(id).orElseThrow(()->new Exception("Seller not found with id:"+id));
+    public Seller getSellerById(Long id) throws SellerException {
+        return sellerRepository.findById(id).orElseThrow(()->new SellerException("Seller not found with id:"+id));
     }
 
     @Override
