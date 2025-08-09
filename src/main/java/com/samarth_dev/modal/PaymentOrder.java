@@ -22,7 +22,7 @@ public class PaymentOrder {
 
     private Long amount;
 
-    private PaymentOrderStatus paymentOrderStatus = PaymentOrderStatus.PENDING;
+    private PaymentOrderStatus status = PaymentOrderStatus.PENDING;
 
     private PaymentMethod paymentMethod;
 
