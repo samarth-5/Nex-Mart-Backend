@@ -1,7 +1,9 @@
 package com.samarth_dev.controller;
 
+import com.razorpay.PaymentLink;
 import com.samarth_dev.domain.PaymentMethod;
 import com.samarth_dev.modal.*;
+import com.samarth_dev.repository.PaymentOrderRepository;
 import com.samarth_dev.response.PaymentLinkResponse;
 import com.samarth_dev.service.*;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ public class OrderController {
     private final CartService cartService;
     private final SellerService sellerService;
     private final SellerReportService sellerReportService;
+    private final PaymentService paymentService;
+    private final PaymentOrderRepository paymentOrderRepository;
 
     @PostMapping()
     public ResponseEntity<PaymentLinkResponse> createOrderHandler(
@@ -32,32 +36,31 @@ public class OrderController {
         Cart cart = cartService.findUserCart(user);
         Set<Order> orders = orderService.createOrder(user, spippingAddress, cart);
 
-        //PaymentOrder paymentOrder = paymentService.createOrder(user, orders);
+        PaymentOrder paymentOrder = paymentService.createOrder(user, orders);
 
         PaymentLinkResponse res = new PaymentLinkResponse();
 
-//        if(paymentMethod.equals(PaymentMethod.RAZORPAY)) {
-//            PaymentLink payment = paymentService.createRazorpayPaymentLink(
-//                    user,
-//                    paymentOrder.getAmount(),
-//                    paymentOrder.getId()
-//            );
-//            String paymentUrl = payment.get("short_url");
-//            String paymentUrlId = payment.get("id");
-//
-//            res.setPayment_link_url(paymentUrl);
-//
-//            paymentOrder.setPaymentLinkId(paymentUrlId);
-//            paymentOrderRepository.save(paymentOrder);
-//        }
-//        else{
-//            String paymentUrl = paymentService.createStripePaymentLink(user,
-//                    paymentOrder.getAmount(),
-//                    paymentOrder.getId());
-//
-//            res.setPayment_link_url(paymentUrl);
-//        }
+        if(paymentMethod.equals(PaymentMethod.RAZORPAY)) {
+            PaymentLink payment = paymentService.createRazorpayPaymentLink(
+                    user,
+                    paymentOrder.getAmount(),
+                    paymentOrder.getId()
+            );
+            String paymentUrl = payment.get("short_url");
+            String paymentUrlId = payment.get("id");
 
+            res.setPayment_link_url(paymentUrl);
+
+            paymentOrder.setPaymentLinkId(paymentUrlId);
+            paymentOrderRepository.save(paymentOrder);
+        }
+        else{
+            String paymentUrl = paymentService.createStripePaymentLink(user,
+                    paymentOrder.getAmount(),
+                    paymentOrder.getId());
+
+            res.setPayment_link_url(paymentUrl);
+        }
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
