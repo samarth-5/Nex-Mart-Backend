@@ -11,6 +11,7 @@ import com.samarth_dev.response.ApiResponse;
 import com.samarth_dev.response.AuthResponse;
 import com.samarth_dev.service.AuthService;
 import com.samarth_dev.service.EmailService;
+import com.samarth_dev.service.SellerReportService;
 import com.samarth_dev.service.SellerService;
 import com.samarth_dev.utils.OtpUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/sellers")
 public class SellerController {
+
     private final SellerService sellerService;
     private final AuthService authService;
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
+    private final SellerReportService sellerReportService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginSeller(@RequestBody LoginRequest req) throws Exception {
@@ -83,14 +86,12 @@ public class SellerController {
         return new ResponseEntity<>(seller, HttpStatus.OK);
     }
 
-//    @GetMapping("/report")
-//    public ResponseEntity<SellerReport> getSellerReport(
-//            @RequestHeader("Authorization") String jwt) throws SellerException {
-//        String email = jwtProvider.getEmailFromJwtToken(jwt);
-//        Seller seller = sellerService.getSellerByEmail(email);
-//        SellerReport report = sellerReportService.getSellerReport(seller);
-//        return new ResponseEntity<>(report, HttpStatus.OK);
-//    }
+    @GetMapping("/report")
+    public ResponseEntity<SellerReport> getSellerReport(@RequestHeader("Authorization") String jwt) throws Exception {
+        Seller seller = sellerService.getSellerProfile(jwt);
+        SellerReport report = sellerReportService.getSellerReport(seller);
+        return new ResponseEntity<>(report, HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<Seller>> getAllSellers(@RequestParam(required = false) AccountStatus status) {
